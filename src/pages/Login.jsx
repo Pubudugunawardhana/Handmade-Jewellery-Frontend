@@ -2,13 +2,14 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-    const [error, setError] = useState('');
     const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -21,9 +22,13 @@ const Login = () => {
             localStorage.setItem('auth-token', res.data.token);
             
             setUser(res.data.user);
+            toast.success("Logged in successfully!");
             navigate('/profile');
         } catch (err) {
-            setError(err.response?.data?.message || 'Error logging in');
+            const errorMsg = err.response?.data?.errors 
+                ? err.response.data.errors.map(e => e.msg).join(', ') 
+                : (err.response?.data?.message || 'Error logging in');
+            toast.error(errorMsg);
         }
     };
 
@@ -31,14 +36,13 @@ const Login = () => {
         <div className="container" style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
             <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '400px' }}>
                 <h2 className="text-center mb-3">Welcome Back</h2>
-                {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem', textAlign: 'center' }}>{error}</p>}
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label>Email</label>
+                        <label><FaEnvelope /> Email</label>
                         <input type="email" name="email" className="form-control" onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label><FaLock /> Password</label>
                         <input type="password" name="password" className="form-control" onChange={handleChange} required />
                     </div>
                     <button type="submit" className="btn btn-primary btn-block mt-3">Login</button>

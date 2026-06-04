@@ -2,14 +2,16 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
 const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        confirmPassword: ''
     });
-    const [error, setError] = useState('');
     const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -17,8 +19,19 @@ const Register = () => {
 
     const onSubmit = async e => {
         e.preventDefault();
+
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match!");
+            return;
+        }
+
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/register', formData);
+            const payload = {
+                name: formData.name,
+                email: formData.email,
+                password: formData.password
+            };
+            const res = await axios.post('http://localhost:5000/api/auth/register', payload);
             localStorage.setItem('auth-token', res.data.token);
             
             // Fetch User Details
@@ -26,9 +39,13 @@ const Register = () => {
                 headers: { 'x-auth-token': res.data.token }
             });
             setUser(userRes.data);
+            toast.success("Registration successful!");
             navigate('/profile');
         } catch (err) {
-            setError(err.response?.data?.message || 'Error registering');
+            const errorMsg = err.response?.data?.errors 
+                ? err.response.data.errors.map(e => e.msg).join(', ') 
+                : (err.response?.data?.message || 'Error registering');
+            toast.error(errorMsg);
         }
     };
 
@@ -36,19 +53,22 @@ const Register = () => {
         <div className="container" style={{ display: 'flex', justifyContent: 'center', marginTop: '4rem' }}>
             <div className="glass-card animate-fade-in" style={{ width: '100%', maxWidth: '400px' }}>
                 <h2 className="text-center mb-3">Create an Account</h2>
-                {error && <p style={{ color: 'var(--danger)', marginBottom: '1rem', textAlign: 'center' }}>{error}</p>}
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
-                        <label>Name</label>
+                        <label><FaUser /> Name</label>
                         <input type="text" name="name" className="form-control" onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <label>Email</label>
+                        <label><FaEnvelope /> Email</label>
                         <input type="email" name="email" className="form-control" onChange={handleChange} required />
                     </div>
                     <div className="form-group">
-                        <label>Password</label>
+                        <label><FaLock /> Password</label>
                         <input type="password" name="password" className="form-control" onChange={handleChange} required minLength="6" />
+                    </div>
+                    <div className="form-group">
+                        <label><FaLock /> Confirm Password</label>
+                        <input type="password" name="confirmPassword" className="form-control" onChange={handleChange} required minLength="6" />
                     </div>
                     <button type="submit" className="btn btn-primary btn-block mt-3">Register</button>
                 </form>

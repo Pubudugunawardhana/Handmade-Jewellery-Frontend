@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { FaUserEdit } from 'react-icons/fa';
 
 const Profile = () => {
     const { user, setUser, loading } = useContext(AuthContext);
@@ -11,7 +13,6 @@ const Profile = () => {
         personality: ''
     });
     const [name, setName] = useState('');
-    const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,10 +39,9 @@ const Profile = () => {
                 headers: { 'x-auth-token': token }
             });
             setUser(res.data);
-            setMessage('Profile updated successfully!');
-            setTimeout(() => setMessage(''), 3000);
+            toast.success("Profile updated successfully!");
         } catch (err) {
-            setMessage('Error updating profile');
+            toast.error("Error updating profile");
         }
     };
 
@@ -51,8 +51,7 @@ const Profile = () => {
     return (
         <div className="container" style={{ marginTop: '3rem' }}>
             <div className="glass-card animate-fade-in" style={{ maxWidth: '600px', margin: '0 auto' }}>
-                <h2 className="mb-3 text-center">User Profile</h2>
-                {message && <div className="text-center mb-3" style={{ color: message.includes('success') ? 'var(--secondary)' : 'var(--danger)' }}>{message}</div>}
+                <h2 className="mb-3 text-center"><FaUserEdit /> User Profile</h2>
                 
                 <form onSubmit={onSubmit}>
                     <div className="form-group">
@@ -65,9 +64,10 @@ const Profile = () => {
                         <input type="email" className="form-control" value={user.email} disabled style={{ opacity: 0.7 }} />
                     </div>
 
-                    <h4 className="mt-3 mb-2">Jewellery Preferences</h4>
+                    <h4 className="mt-4 mb-3" style={{ color: 'var(--secondary)' }}>Jewellery Preferences</h4>
+                    <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Help us tailor our AI recommendations specifically for you.</p>
                     
-                    <div className="form-group">
+                    <div className="form-group mt-3">
                         <label>Face Shape</label>
                         <select className="form-control" name="faceShape" value={preferences.faceShape} onChange={handlePrefChange}>
                             <option value="">Select...</option>
@@ -99,7 +99,7 @@ const Profile = () => {
                         </select>
                     </div>
 
-                    <button type="submit" className="btn btn-primary mt-3">Save Preferences</button>
+                    <button type="submit" className="btn btn-primary mt-4" style={{ width: '100%' }}>Save Preferences</button>
                 </form>
             </div>
         </div>
