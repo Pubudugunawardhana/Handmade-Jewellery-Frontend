@@ -33,8 +33,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFCF9] flex flex-col">
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-2">
+    <div className="min-h-screen bg-[#FDFCF9]">
+      <div className="grid grid-cols-1 lg:grid-cols-2" style={{ minHeight: 'calc(100vh - 40px)' }}>
 
         {/* Left — Brand Panel */}
         <div className="hidden lg:flex flex-col items-center justify-center bg-[#111] p-16 relative overflow-hidden">
