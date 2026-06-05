@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiShoppingBag, FiLogOut, FiSearch } from 'react-icons/fi';
 import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
@@ -12,9 +12,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 30);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -30,141 +28,142 @@ const Navbar = () => {
   };
 
   const navLinks = [
+    { name: 'Home', path: '/' },
     { name: 'Collections', path: '/collections' },
     { name: 'Customize', path: '/customize' },
-    { name: 'Try-On', path: '/try-on' },
+    { name: 'Virtual Try-On', path: '/try-on' },
+    { name: 'About Us', path: '/about' },
   ];
 
   return (
-    <motion.header
-      layout
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-        isScrolled
-          ? 'glass-panel shadow-sm py-4'
-          : 'bg-transparent py-6'
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden text-stone-800 focus:outline-none transition-transform hover:scale-110"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle mobile menu"
-        >
-          {mobileMenuOpen ? <FiX size={26} strokeWidth={1.5} /> : <FiMenu size={26} strokeWidth={1.5} />}
-        </button>
-
-        {/* Desktop Left Nav */}
-        <nav className="hidden md:flex flex-1 space-x-10 items-center">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className="text-stone-600 hover:text-stone-900 text-sm uppercase tracking-widest font-medium transition-colors relative group"
-            >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-stone-900 transition-all duration-300 group-hover:w-full"></span>
-            </Link>
-          ))}
-        </nav>
-
-        {/* Logo — centered */}
-        <Link
-          to="/"
-          className="text-2xl md:text-3xl font-serif text-stone-900 uppercase tracking-[0.2em] font-medium flex-shrink-0 mx-auto md:mx-0"
-        >
-          Wave Mirissa
-        </Link>
-
-        {/* Desktop Right Nav / Auth Actions */}
-        <div className="hidden md:flex flex-1 justify-end items-center space-x-6">
-          {user ? (
-            <>
-              <Link
-                to="/profile"
-                className="flex items-center space-x-2 text-stone-600 hover:text-stone-900 transition-colors"
-              >
-                <FiUser size={18} strokeWidth={1.5} />
-                <span className="text-sm uppercase tracking-widest font-medium">{user.name?.split(' ')[0] || 'Profile'}</span>
-              </Link>
-              <button
-                onClick={onLogout}
-                className="flex items-center space-x-2 text-stone-600 hover:text-stone-900 transition-colors"
-              >
-                <FiLogOut size={18} strokeWidth={1.5} />
-                <span className="text-sm uppercase tracking-widest font-medium">Logout</span>
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="flex items-center space-x-2 text-stone-600 hover:text-stone-900 transition-colors"
-              >
-                <FiUser size={18} strokeWidth={1.5} />
-                <span className="text-sm uppercase tracking-widest font-medium">Account</span>
-              </Link>
-              <Link
-                to="/register"
-                className="px-5 py-2 bg-stone-900 text-white text-xs uppercase tracking-widest font-medium hover:bg-stone-700 transition-colors"
-              >
-                Register
-              </Link>
-            </>
-          )}
-        </div>
-
-        {/* Mobile Right Spacer (to keep logo centered) */}
-        <div className="w-6 md:hidden"></div>
+    <>
+      {/* Top Announcement Bar */}
+      <div className="w-full bg-[#1a1a1a] text-center py-2 px-4 text-xs tracking-[0.2em] text-[#B8962E] uppercase font-light z-50 relative">
+        Free Shipping on orders above Rs. 15,000 — Handcrafted in Sri Lanka
       </div>
 
-      {/* Mobile Navigation Dropdown */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.nav
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden absolute top-full left-0 w-full glass-panel border-t border-stone-200/50 shadow-elegant"
-          >
-            <div className="flex flex-col px-6 py-8 space-y-6 text-center">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.path}
-                  className="text-stone-800 hover:text-stone-500 text-lg uppercase tracking-[0.15em] font-medium"
-                >
-                  {link.name}
+      <motion.header
+        initial={{ y: -10, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className={`sticky top-0 left-0 w-full z-50 transition-all duration-400 ${
+          isScrolled ? 'glass-nav shadow-sm py-3' : 'bg-[#FDFCF9] py-4 border-b border-[#e8e0d0]'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between gap-4">
+
+          {/* Logo */}
+          <Link to="/" className="flex flex-col items-center flex-shrink-0">
+            <span className="font-serif text-2xl md:text-3xl font-semibold text-[#1a1a1a] tracking-widest leading-none">
+              Wave Mirissa
+            </span>
+            <span className="text-[9px] tracking-[0.35em] text-[#B8962E] uppercase mt-0.5 font-light">
+              Coastal Jewellery — Est. 2024
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`text-xs tracking-[0.15em] uppercase font-medium transition-colors relative group ${
+                  location.pathname === link.path ? 'text-[#B8962E]' : 'text-[#333] hover:text-[#B8962E]'
+                }`}
+              >
+                {link.name}
+                <span className={`absolute -bottom-1 left-0 h-px bg-[#B8962E] transition-all duration-300 ${
+                  location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
+                }`}></span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-5">
+            <button className="text-[#555] hover:text-[#B8962E] transition-colors">
+              <FiSearch size={18} strokeWidth={1.5} />
+            </button>
+            {user ? (
+              <>
+                <Link to="/profile" className="flex items-center gap-1.5 text-[#555] hover:text-[#B8962E] transition-colors">
+                  <FiUser size={18} strokeWidth={1.5} />
+                  <span className="text-xs tracking-widest uppercase">{user.name?.split(' ')[0]}</span>
                 </Link>
-              ))}
-              <div className="w-12 h-px bg-stone-200 mx-auto my-2"></div>
-              {user ? (
-                <>
-                  <Link to="/profile" className="text-stone-800 hover:text-stone-500 text-lg uppercase tracking-[0.15em] font-medium">
-                    Profile
+                <button onClick={onLogout} className="text-[#555] hover:text-[#B8962E] transition-colors">
+                  <FiLogOut size={18} strokeWidth={1.5} />
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="flex items-center gap-1.5 text-[#555] hover:text-[#B8962E] transition-colors"
+              >
+                <FiUser size={18} strokeWidth={1.5} />
+                <span className="text-xs tracking-widest uppercase">Account</span>
+              </Link>
+            )}
+            <Link
+              to="/register"
+              className="btn-gold inline-block rounded-none"
+            >
+              Register
+            </Link>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            className="lg:hidden text-[#1a1a1a] focus:outline-none"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <FiX size={24} strokeWidth={1.5} /> : <FiMenu size={24} strokeWidth={1.5} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              className="lg:hidden bg-[#FDFCF9] border-t border-[#e8e0d0] overflow-hidden"
+            >
+              <div className="flex flex-col px-6 py-6 gap-5">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    className="text-xs tracking-[0.2em] uppercase font-medium text-[#1a1a1a] hover:text-[#B8962E] transition-colors"
+                  >
+                    {link.name}
                   </Link>
-                  <button onClick={onLogout} className="text-stone-800 hover:text-stone-500 text-lg uppercase tracking-[0.15em] font-medium">
-                    Logout
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link to="/login" className="text-stone-800 hover:text-stone-500 text-lg uppercase tracking-[0.15em] font-medium">
-                    Account
-                  </Link>
-                  <Link to="/register" className="text-stone-800 hover:text-stone-500 text-lg uppercase tracking-[0.15em] font-medium">
-                    Register
-                  </Link>
-                </>
-              )}
-            </div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
-    </motion.header>
+                ))}
+                <div className="w-12 h-px bg-[#e8e0d0] my-2"></div>
+                {user ? (
+                  <>
+                    <Link to="/profile" className="text-xs tracking-widest uppercase text-[#1a1a1a] hover:text-[#B8962E]">
+                      My Profile
+                    </Link>
+                    <button onClick={onLogout} className="text-left text-xs tracking-widest uppercase text-[#1a1a1a] hover:text-[#B8962E]">
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/login" className="text-xs tracking-widest uppercase text-[#1a1a1a] hover:text-[#B8962E]">Account</Link>
+                    <Link to="/register" className="btn-gold inline-block text-center rounded-none">Register</Link>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.header>
+    </>
   );
 };
 

@@ -1,70 +1,135 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+
+const slides = [
+  {
+    headline: 'Where Heritage',
+    subHeadline: 'Meets the Ocean',
+    desc: 'Handcrafted jewellery inspired by the timeless beauty of Sri Lanka\'s southern coast.',
+    cta: 'Explore Collection',
+    ctaPath: '/collections',
+    cta2: 'Virtual Try-On',
+    cta2Path: '/try-on',
+    bg: 'bg-gradient-to-br from-[#F5F0E8] via-[#FDFCF9] to-[#EDE8DC]',
+    image: '/hero_jewellery.png',
+  },
+  {
+    headline: 'Crafted for You',
+    subHeadline: 'Personalised & Perfect',
+    desc: 'Use our AI-powered advisor to find jewellery that perfectly matches your face, skin tone, and personality.',
+    cta: 'Get AI Recommendations',
+    ctaPath: '/try-on',
+    cta2: 'Customize Yours',
+    cta2Path: '/customize',
+    bg: 'bg-gradient-to-br from-[#FDFCF9] via-[#F5F0E8] to-[#f0e8d8]',
+    image: '/necklace.png',
+  },
+];
 
 const Hero = () => {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrent((c) => (c + 1) % slides.length), 6000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  const next = () => setCurrent((c) => (c + 1) % slides.length);
+
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#FAFAF9]">
+    <section className={`relative min-h-[90vh] flex items-center overflow-hidden transition-colors duration-700 ${slides[current].bg}`}>
 
-      {/* Elegant minimalist background blobs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-50/50 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-amber-50/40 blur-[120px] pointer-events-none" />
+      {/* Decorative gold lines */}
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#B8962E]/30 to-transparent pointer-events-none"></div>
 
-      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center mt-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 w-full py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="text-stone-500 uppercase tracking-[0.3em] text-xs md:text-sm font-semibold mb-6"
-        >
-          The Artisan Collection
-        </motion.p>
+        {/* Text Content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current + '-text'}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 30 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-start"
+          >
+            <p className="text-[#B8962E] text-xs tracking-[0.35em] uppercase font-medium mb-4">
+              — Wave Mirissa Coastal Jewellery
+            </p>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl md:text-7xl lg:text-8xl font-serif text-stone-900 mb-8 leading-[1.1] tracking-tight"
-        >
-          Discover Your <br className="hidden md:block" />
-          <em className="not-italic text-stone-500">Coastal Charm.</em>
-        </motion.h1>
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-light text-[#1a1a1a] leading-[1.05] mb-2">
+              {slides[current].headline}
+            </h1>
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl italic font-light text-[#B8962E] leading-[1.05] mb-6">
+              {slides[current].subHeadline}
+            </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg md:text-xl text-stone-600 font-light max-w-2xl leading-relaxed mb-12"
-        >
-          Discover handcrafted jewellery that captures the serene beauty of the coast. Ethically sourced, perfectly customized for you.
-        </motion.p>
+            <div className="gold-divider mb-6 ml-1"></div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto px-4"
-        >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-            <Link
-              to="/collections"
-              className="block px-10 py-4 bg-stone-900 text-white text-sm uppercase tracking-widest font-medium hover:bg-stone-700 transition-colors w-full sm:w-auto text-center shadow-xl shadow-stone-900/10"
-            >
-              Explore Collection
-            </Link>
+            <p className="text-[#555] font-light text-base md:text-lg max-w-md leading-relaxed mb-10">
+              {slides[current].desc}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to={slides[current].ctaPath} className="btn-gold rounded-none text-center">
+                {slides[current].cta}
+              </Link>
+              <Link to={slides[current].cta2Path} className="btn-outline-dark rounded-none text-center">
+                {slides[current].cta2}
+              </Link>
+            </div>
+
+            {/* Slide Indicators */}
+            <div className="flex gap-2 mt-10">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrent(i)}
+                  className={`h-0.5 transition-all duration-500 ${i === current ? 'w-10 bg-[#B8962E]' : 'w-4 bg-[#ccc]'}`}
+                />
+              ))}
+            </div>
           </motion.div>
+        </AnimatePresence>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
-            <Link
-              to="/try-on"
-              className="block px-10 py-4 bg-transparent text-stone-900 border border-stone-300 text-sm uppercase tracking-widest font-medium hover:border-stone-900 hover:bg-stone-50 transition-colors w-full sm:w-auto text-center"
-            >
-              Virtual Try-On
-            </Link>
+        {/* Image */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current + '-img'}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.05 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="relative flex justify-center items-center"
+          >
+            {/* Decorative background circle */}
+            <div className="absolute w-80 h-80 md:w-[450px] md:h-[450px] rounded-full bg-gradient-to-br from-[#B8962E]/10 to-transparent"></div>
+            <img
+              src={slides[current].image}
+              alt="Wave Mirissa Jewellery"
+              className="relative z-10 w-72 md:w-[420px] object-contain drop-shadow-2xl"
+            />
           </motion.div>
-        </motion.div>
+        </AnimatePresence>
       </div>
+
+      {/* Slide Arrow Controls */}
+      <button
+        onClick={prev}
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 border border-[#B8962E]/30 text-[#B8962E] flex items-center justify-center hover:bg-[#B8962E] hover:text-white transition-all z-20"
+      >
+        <FiChevronLeft size={20} />
+      </button>
+      <button
+        onClick={next}
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 border border-[#B8962E]/30 text-[#B8962E] flex items-center justify-center hover:bg-[#B8962E] hover:text-white transition-all z-20"
+      >
+        <FiChevronRight size={20} />
+      </button>
     </section>
   );
 };
