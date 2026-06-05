@@ -1,168 +1,175 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiUser, FiShoppingBag, FiLogOut, FiSearch } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiLogOut, FiSearch } from 'react-icons/fi';
 import { AuthContext } from '../context/AuthContext';
+
+const NAV_LINKS = [
+  { name: 'Home', path: '/' },
+  { name: 'Collections', path: '/collections' },
+  { name: 'Customize', path: '/customize' },
+  { name: 'Virtual Try-On', path: '/try-on' },
+  { name: 'About Us', path: '/about' },
+];
 
 const Navbar = () => {
   const { user, setUser } = useContext(AuthContext);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 30);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
+  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
-  const onLogout = () => {
+  const logout = () => {
     localStorage.removeItem('auth-token');
     setUser(null);
     navigate('/login');
   };
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Collections', path: '/collections' },
-    { name: 'Customize', path: '/customize' },
-    { name: 'Virtual Try-On', path: '/try-on' },
-    { name: 'About Us', path: '/about' },
-  ];
+  const isActive = (path) =>
+    path === '/' ? location.pathname === '/' : location.pathname.startsWith(path);
 
   return (
     <>
-      {/* Top Announcement Bar */}
-      <div className="w-full bg-[#1a1a1a] text-center py-2 px-4 text-xs tracking-[0.2em] text-[#B8962E] uppercase font-light z-50 relative">
-        Free Shipping on orders above Rs. 15,000 — Handcrafted in Sri Lanka
+      {/* ── Announcement Bar ── */}
+      <div className="w-full bg-[#1a1a1a] py-2 px-4 text-center text-[11px] tracking-[0.22em] text-[#B8962E] uppercase font-medium z-50 relative select-none">
+        Free Shipping on orders above Rs.&nbsp;15,000 &mdash; Handcrafted in Sri Lanka
       </div>
 
-      <motion.header
-        initial={{ y: -10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className={`sticky top-0 left-0 w-full z-50 transition-all duration-400 ${
-          isScrolled ? 'glass-nav shadow-sm py-3' : 'bg-[#FDFCF9] py-4 border-b border-[#e8e0d0]'
+      {/* ── Main Header ── */}
+      <header
+        className={`sticky top-0 left-0 w-full z-40 transition-all duration-300 ${
+          scrolled
+            ? 'glass-nav py-3'
+            : 'bg-[#FDFCF9] border-b border-[#ede6d8] py-4'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-8 md:px-14 flex items-center gap-8">
 
-          {/* Logo */}
-          <Link to="/" className="flex flex-col items-center flex-shrink-0">
-            <span className="font-serif text-2xl md:text-3xl font-semibold text-[#1a1a1a] tracking-widest leading-none">
+          {/* ── Logo ── */}
+          <Link to="/" className="flex-shrink-0 flex flex-col leading-none">
+            <span className="font-serif text-[1.6rem] md:text-[1.85rem] font-semibold text-[#1a1a1a] tracking-[0.15em]">
               Wave Mirissa
             </span>
-            <span className="text-[9px] tracking-[0.35em] text-[#B8962E] uppercase mt-0.5 font-light">
+            <span className="text-[9px] tracking-[0.38em] text-[#B8962E] uppercase font-light mt-0.5">
               Coastal Jewellery — Est. 2024
             </span>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {navLinks.map((link) => (
+          {/* ── Desktop Nav ── */}
+          <nav className="hidden lg:flex items-center gap-8 flex-1 justify-center">
+            {NAV_LINKS.map(link => (
               <Link
                 key={link.name}
                 to={link.path}
-                className={`text-xs tracking-[0.15em] uppercase font-medium transition-colors relative group ${
-                  location.pathname === link.path ? 'text-[#B8962E]' : 'text-[#333] hover:text-[#B8962E]'
+                className={`relative text-[11px] tracking-[0.18em] uppercase font-medium transition-colors pb-0.5 group ${
+                  isActive(link.path) ? 'text-[#B8962E]' : 'text-[#444] hover:text-[#B8962E]'
                 }`}
               >
                 {link.name}
-                <span className={`absolute -bottom-1 left-0 h-px bg-[#B8962E] transition-all duration-300 ${
-                  location.pathname === link.path ? 'w-full' : 'w-0 group-hover:w-full'
-                }`}></span>
+                <span
+                  className={`absolute bottom-0 left-0 h-[1.5px] bg-[#B8962E] transition-all duration-300 ${
+                    isActive(link.path) ? 'w-full' : 'w-0 group-hover:w-full'
+                  }`}
+                />
               </Link>
             ))}
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center gap-5">
-            <button className="text-[#555] hover:text-[#B8962E] transition-colors">
-              <FiSearch size={18} strokeWidth={1.5} />
+          {/* ── Desktop Actions ── */}
+          <div className="hidden lg:flex items-center gap-5 flex-shrink-0 ml-auto">
+            <button aria-label="Search" className="text-[#666] hover:text-[#B8962E] transition-colors">
+              <FiSearch size={17} strokeWidth={1.6} />
             </button>
+
             {user ? (
               <>
-                <Link to="/profile" className="flex items-center gap-1.5 text-[#555] hover:text-[#B8962E] transition-colors">
-                  <FiUser size={18} strokeWidth={1.5} />
-                  <span className="text-xs tracking-widest uppercase">{user.name?.split(' ')[0]}</span>
+                <Link to="/profile" className="flex items-center gap-2 text-[#555] hover:text-[#B8962E] transition-colors">
+                  <FiUser size={17} strokeWidth={1.6} />
+                  <span className="text-[11px] tracking-[0.16em] uppercase font-medium">
+                    {user.name?.split(' ')[0] || 'Profile'}
+                  </span>
                 </Link>
-                <button onClick={onLogout} className="text-[#555] hover:text-[#B8962E] transition-colors">
-                  <FiLogOut size={18} strokeWidth={1.5} />
+                <button
+                  onClick={logout}
+                  className="text-[#555] hover:text-[#B8962E] transition-colors"
+                  aria-label="Logout"
+                >
+                  <FiLogOut size={17} strokeWidth={1.6} />
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
-                className="flex items-center gap-1.5 text-[#555] hover:text-[#B8962E] transition-colors"
-              >
-                <FiUser size={18} strokeWidth={1.5} />
-                <span className="text-xs tracking-widest uppercase">Account</span>
+              <Link to="/login" className="flex items-center gap-2 text-[#555] hover:text-[#B8962E] transition-colors">
+                <FiUser size={17} strokeWidth={1.6} />
+                <span className="text-[11px] tracking-[0.16em] uppercase font-medium">Account</span>
               </Link>
             )}
-            <Link
-              to="/register"
-              className="btn-gold inline-block rounded-none"
-            >
-              Register
-            </Link>
+
+            <Link to="/register" className="btn-gold">Register</Link>
           </div>
 
-          {/* Mobile Toggle */}
+          {/* ── Mobile Toggle ── */}
           <button
-            className="lg:hidden text-[#1a1a1a] focus:outline-none"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden ml-auto text-[#1a1a1a] p-1"
+            onClick={() => setMenuOpen(o => !o)}
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <FiX size={24} strokeWidth={1.5} /> : <FiMenu size={24} strokeWidth={1.5} />}
+            {menuOpen ? <FiX size={23} strokeWidth={1.5} /> : <FiMenu size={23} strokeWidth={1.5} />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* ── Mobile Menu ── */}
         <AnimatePresence>
-          {mobileMenuOpen && (
+          {menuOpen && (
             <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
-              className="lg:hidden bg-[#FDFCF9] border-t border-[#e8e0d0] overflow-hidden"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.28, ease: 'easeOut' }}
+              className="lg:hidden overflow-hidden bg-[#FDFCF9] border-t border-[#ede6d8]"
             >
-              <div className="flex flex-col px-6 py-6 gap-5">
-                {navLinks.map((link) => (
+              <div className="flex flex-col px-8 py-6 gap-4">
+                {NAV_LINKS.map(link => (
                   <Link
                     key={link.name}
                     to={link.path}
-                    className="text-xs tracking-[0.2em] uppercase font-medium text-[#1a1a1a] hover:text-[#B8962E] transition-colors"
+                    className={`text-[11px] tracking-[0.22em] uppercase font-medium py-1 transition-colors ${
+                      isActive(link.path) ? 'text-[#B8962E]' : 'text-[#333] hover:text-[#B8962E]'
+                    }`}
                   >
                     {link.name}
                   </Link>
                 ))}
-                <div className="w-12 h-px bg-[#e8e0d0] my-2"></div>
+                <div className="h-px bg-[#ede6d8] my-1" />
                 {user ? (
                   <>
-                    <Link to="/profile" className="text-xs tracking-widest uppercase text-[#1a1a1a] hover:text-[#B8962E]">
+                    <Link to="/profile" className="text-[11px] tracking-[0.22em] uppercase font-medium text-[#333] hover:text-[#B8962E] transition-colors">
                       My Profile
                     </Link>
-                    <button onClick={onLogout} className="text-left text-xs tracking-widest uppercase text-[#1a1a1a] hover:text-[#B8962E]">
+                    <button onClick={logout} className="text-left text-[11px] tracking-[0.22em] uppercase font-medium text-[#333] hover:text-[#B8962E] transition-colors">
                       Logout
                     </button>
                   </>
                 ) : (
                   <>
-                    <Link to="/login" className="text-xs tracking-widest uppercase text-[#1a1a1a] hover:text-[#B8962E]">Account</Link>
-                    <Link to="/register" className="btn-gold inline-block text-center rounded-none">Register</Link>
+                    <Link to="/login" className="text-[11px] tracking-[0.22em] uppercase font-medium text-[#333] hover:text-[#B8962E] transition-colors">
+                      Account
+                    </Link>
+                    <Link to="/register" className="btn-gold text-center">Register</Link>
                   </>
                 )}
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-      </motion.header>
+      </header>
     </>
   );
 };
