@@ -3,21 +3,31 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Navbar from './components/Navbar';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Profile from './pages/Profile';
-import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import './index.css';
 
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import Features from './components/Features';
+import Footer from './components/Footer';
+import ProtectedRoute from './components/ProtectedRoute';
+
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Profile from './pages/Profile';
+import Collections from './pages/Collections';
+import About from './pages/About';
+import Offers from './pages/Offers';
+import Contact from './pages/Contact';
+import Customize from './pages/Customize';
+import TryOn from './pages/TryOn';
+
 const Home = () => (
-  <div className="container" style={{ marginTop: '4rem', textAlign: 'center' }}>
-    <h1 className="animate-fade-in" style={{ fontSize: '3rem', color: 'var(--accent)' }}>Welcome to Wave Mirissa</h1>
-    <p className="mt-2 animate-fade-in" style={{ fontSize: '1.2rem', animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards' }}>
-      Discover unique, ocean-inspired handmade jewellery.
-    </p>
-  </div>
+  <main>
+    <Hero />
+    <Features />
+    <Footer />
+  </main>
 );
 
 function App() {
@@ -27,6 +37,12 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/collections" element={<Collections />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/offers" element={<Offers />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/customize" element={<Customize />} />
+          <Route path="/try-on" element={<TryOn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={
@@ -36,7 +52,11 @@ function App() {
           } />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        <ToastContainer position="bottom-right" theme="dark" />
+        <ToastContainer
+          position="bottom-right"
+          theme="light"
+          toastClassName="border border-[#e8e0d0] shadow-lg font-sans"
+        />
       </Router>
     </AuthProvider>
   );
