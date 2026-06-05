@@ -1,64 +1,70 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiInstagram, FiFacebook, FiYoutube, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { FiInstagram, FiFacebook, FiYoutube, FiMail } from 'react-icons/fi';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#111111] text-white">
-      {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <footer className="bg-[#FDFCF9] text-[#1a1a1a] border-t border-[#ede6d8]">
+      <div 
+        className="w-full px-6 md:px-10 pt-16 pb-8"
+        style={{ maxWidth: '1280px', margin: '0 auto' }}
+      >
+        {/* Top Section - Logo & Socials */}
+        <div className="flex flex-col md:flex-row justify-between items-start mb-16 gap-8">
+          {/* Logo */}
+          <Link to="/" className="inline-block">
+            <span className="font-serif text-[1.8rem] md:text-4xl font-semibold text-[#1a1a1a] tracking-widest block">Wave Mirissa</span>
+            <span className="text-[10px] md:text-xs tracking-[0.35em] text-[#B8962E] uppercase font-light mt-1 block">Coastal Jewellery — Est. 2024</span>
+          </Link>
 
-          {/* Brand Column */}
-          <div className="lg:col-span-1">
-            <Link to="/" className="inline-block mb-4">
-              <span className="font-serif text-2xl font-semibold text-white tracking-widest block">Wave Mirissa</span>
-              <span className="text-[9px] tracking-[0.35em] text-[#B8962E] uppercase font-light">Coastal Jewellery — Est. 2024</span>
-            </Link>
-            <p className="text-[#999] text-sm font-light leading-relaxed mb-6">
-              Handcrafted jewellery inspired by the timeless beauty of Sri Lanka's southern coast. Every piece tells a story of the ocean.
-            </p>
-            <div className="flex items-center gap-4">
-              <a href="https://wa.me/94771234567" target="_blank" rel="noreferrer" className="text-[#999] hover:text-[#25D366] transition-colors"><FaWhatsapp size={18} /></a>
-              <a href="#" className="text-[#999] hover:text-[#B8962E] transition-colors"><FiFacebook size={17} /></a>
-              <a href="#" className="text-[#999] hover:text-[#B8962E] transition-colors"><FiInstagram size={17} /></a>
-              <a href="#" className="text-[#999] hover:text-[#B8962E] transition-colors"><FiYoutube size={17} /></a>
-              <a href="mailto:info@wavemirissa.lk" className="text-[#999] hover:text-[#B8962E] transition-colors"><FiMail size={17} /></a>
+          {/* Social & Contact */}
+          <div className="flex flex-col items-end gap-6">
+            <a href="tel:+94771234567" className="inline-flex items-center gap-2 bg-[#ede6d8]/60 px-5 py-2.5 rounded-full text-sm text-[#1a1a1a] font-medium hover:bg-[#ede6d8] transition-colors">
+              <FaWhatsapp size={16} className="text-[#B8962E]" />
+              +94 77 123 4567
+            </a>
+            
+            <div className="flex items-center gap-6">
+              <a href="#" className="text-[#1a1a1a] hover:text-[#B8962E] transition-colors"><FiFacebook size={20} strokeWidth={1.5} /></a>
+              <a href="#" className="text-[#1a1a1a] hover:text-[#B8962E] transition-colors"><FiInstagram size={20} strokeWidth={1.5} /></a>
+              <a href="#" className="text-[#1a1a1a] hover:text-[#B8962E] transition-colors"><FiYoutube size={20} strokeWidth={1.5} /></a>
+              <a href="mailto:info@wavemirissa.lk" className="flex items-center gap-2 text-[#1a1a1a] hover:text-[#B8962E] transition-colors font-medium text-sm ml-2">
+                <FiMail size={20} strokeWidth={1.5} />
+                info@wavemirissa.lk
+              </a>
             </div>
           </div>
+        </div>
 
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-serif text-lg text-white font-light mb-5 after:block after:w-8 after:h-px after:bg-[#B8962E] after:mt-2">Quick Links</h4>
-            <ul className="space-y-2.5">
-              {[
-                { name: 'Home', path: '/' },
-                { name: 'Our Collections', path: '/collections' },
-                { name: 'Customize', path: '/customize' },
-                { name: 'Virtual Try-On', path: '/try-on' },
-                { name: 'About Us', path: '/about' },
-                { name: 'Exclusive Offers', path: '/offers' },
-                { name: 'Contact Us', path: '/contact' },
-              ].map(link => (
-                <li key={link.name}>
-                  <Link to={link.path} className="text-[#999] hover:text-[#B8962E] text-sm font-light transition-colors tracking-wide">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+        {/* Main Links Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-8 md:gap-12 mb-16">
+          
+          {/* Brand Col */}
+          <div className="col-span-2 lg:col-span-2 lg:pr-8">
+            <h4 className="font-medium text-[#B8962E] mb-6 text-[13px] tracking-wide">Wave Mirissa Pvt Ltd</h4>
+            <p className="text-[#555] text-[13px] font-medium leading-relaxed mb-6">
+              Timeless Craftsmanship, Modern Elegance.
+            </p>
+            <p className="text-[#1a1a1a] text-[13px] font-bold">Est. 2024</p>
+          </div>
+
+          {/* Home Link (mimicking the single link column in Vogue) */}
+          <div className="lg:ml-6">
+            <Link to="/" className="font-bold text-[13px] text-[#1a1a1a] hover:text-[#B8962E] transition-colors block mb-6">Home</Link>
+            <Link to="/collections" className="font-bold text-[13px] text-[#1a1a1a] hover:text-[#B8962E] transition-colors block mb-6">Collections</Link>
+            <Link to="/customize" className="font-bold text-[13px] text-[#1a1a1a] hover:text-[#B8962E] transition-colors block">Customize</Link>
           </div>
 
           {/* Categories */}
           <div>
-            <h4 className="font-serif text-lg text-white font-light mb-5 after:block after:w-8 after:h-px after:bg-[#B8962E] after:mt-2">Categories</h4>
-            <ul className="space-y-2.5">
-              {['Necklaces', 'Earrings', 'Pendants', 'Bracelets', 'Rings', 'Bangles', 'Anklets'].map(cat => (
+            <h4 className="font-bold text-[13px] text-[#1a1a1a] mb-6">Categories</h4>
+            <ul className="space-y-4">
+              {['Bangles', 'Bracelets', 'Chains', 'Earrings & Studs', 'Necklaces', 'Pendants', 'Rings'].map(cat => (
                 <li key={cat}>
-                  <Link to={`/collections?category=${cat.toLowerCase()}`} className="text-[#999] hover:text-[#B8962E] text-sm font-light transition-colors tracking-wide">
+                  <Link to={`/collections?category=${cat.toLowerCase()}`} className="text-[#333] hover:text-[#B8962E] text-[13px] font-bold transition-colors">
                     {cat}
                   </Link>
                 </li>
@@ -66,39 +72,39 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Contact Info */}
+          {/* About Vogue -> About Us */}
           <div>
-            <h4 className="font-serif text-lg text-white font-light mb-5 after:block after:w-8 after:h-px after:bg-[#B8962E] after:mt-2">Contact Us</h4>
+            <h4 className="font-bold text-[13px] text-[#1a1a1a] mb-6">About Wave</h4>
             <ul className="space-y-4">
-              <li className="flex gap-3 text-sm text-[#999] font-light">
-                <FiMapPin size={16} className="text-[#B8962E] mt-0.5 flex-shrink-0" />
-                <span>No. 42, Beach Road,<br />Mirissa, Sri Lanka</span>
-              </li>
-              <li className="flex gap-3 text-sm text-[#999] font-light">
-                <FiPhone size={16} className="text-[#B8962E] mt-0.5 flex-shrink-0" />
-                <a href="tel:+94771234567" className="hover:text-[#B8962E] transition-colors">+94 77 123 4567</a>
-              </li>
-              <li className="flex gap-3 text-sm text-[#999] font-light">
-                <FiMail size={16} className="text-[#B8962E] mt-0.5 flex-shrink-0" />
-                <a href="mailto:info@wavemirissa.lk" className="hover:text-[#B8962E] transition-colors">info@wavemirissa.lk</a>
-              </li>
-              <li className="flex gap-3 text-sm text-[#999] font-light">
-                <FaWhatsapp size={16} className="text-[#25D366] mt-0.5 flex-shrink-0" />
-                <a href="https://wa.me/94771234567" target="_blank" rel="noreferrer" className="hover:text-[#B8962E] transition-colors">Chat on WhatsApp</a>
-              </li>
+              <li><Link to="/about" className="text-[#333] hover:text-[#B8962E] text-[13px] font-bold transition-colors">About Us</Link></li>
+              <li><Link to="/try-on" className="text-[#333] hover:text-[#B8962E] text-[13px] font-bold transition-colors">Virtual Try-On</Link></li>
             </ul>
           </div>
-        </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-[#666] text-xs tracking-wide">© {currentYear} Wave Mirissa. All rights reserved.</p>
-          <div className="flex gap-6">
-            <Link to="/privacy" className="text-[#666] hover:text-[#B8962E] text-xs transition-colors">Privacy Policy</Link>
-            <Link to="/terms" className="text-[#666] hover:text-[#B8962E] text-xs transition-colors">Terms & Conditions</Link>
+          {/* Legal */}
+          <div>
+            <h4 className="font-bold text-[13px] text-[#1a1a1a] mb-6">Legal</h4>
+            <ul className="space-y-4">
+              <li><Link to="/privacy" className="text-[#333] hover:text-[#B8962E] text-[13px] font-bold transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-[#333] hover:text-[#B8962E] text-[13px] font-bold transition-colors">Terms & Conditions</Link></li>
+            </ul>
           </div>
+
+          {/* Visit Us */}
+          <div>
+            <h4 className="font-bold text-[13px] text-[#1a1a1a] mb-6">Visit us</h4>
+            <div className="text-[#333] text-[13px] mb-6">
+              <p className="font-bold mb-1">Head Office</p>
+              <p className="font-medium leading-relaxed">No. 42, Beach Road,<br/>Mirissa, Sri Lanka</p>
+            </div>
+            <a href="https://maps.google.com" target="_blank" rel="noreferrer" className="text-[#1a1a1a] hover:text-[#B8962E] text-[13px] font-bold transition-colors underline underline-offset-4">Find us on Maps</a>
+          </div>
+
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-[#ede6d8] pt-6 flex justify-center">
+          <p className="text-[#555] text-xs font-medium tracking-wide">© {currentYear} Wave Mirissa. All rights reserved.</p>
         </div>
       </div>
     </footer>
