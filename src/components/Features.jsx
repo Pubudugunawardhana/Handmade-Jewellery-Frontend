@@ -43,9 +43,9 @@ const cardVariants = {
 const Features = () => {
   return (
     <>
-      {/* Category Grid — like Vogue Jewellers */}
+      {/* Category Grid */}
       <section className="py-20 bg-[#FDFCF9]">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 56px' }}>
           <div className="text-center mb-14">
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -77,18 +77,18 @@ const Features = () => {
           >
             {categories.map((cat, i) => (
               <motion.div key={i} variants={cardVariants}>
-                <Link to={cat.path} className="category-card block bg-[#F5F0E8] group">
-                  <div className="aspect-square overflow-hidden bg-[#EDE8DC] flex items-center justify-center p-6">
+                <Link to={cat.path} className="block bg-[#F5F0E8] group">
+                  <div className="relative w-full bg-[#EDE8DC] overflow-hidden" style={{ paddingBottom: '100%' }}>
                     <img
                       src={cat.image}
                       alt={cat.name}
-                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-110"
+                      className="absolute top-0 left-0 w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-serif text-xl text-[#1a1a1a] font-light mb-0.5">{cat.name}</h3>
+                  <div className="p-5">
+                    <h3 className="font-serif text-xl text-[#1a1a1a] font-light mb-1">{cat.name}</h3>
                     <p className="text-[#888] text-xs font-light mb-3">{cat.subtext}</p>
-                    <span className="text-[#B8962E] text-xs tracking-[0.18em] uppercase font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <span className="text-[#B8962E] text-[11px] tracking-[0.18em] uppercase font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
                       View Details <FiArrowRight size={12} />
                     </span>
                   </div>
@@ -100,8 +100,8 @@ const Features = () => {
       </section>
 
       {/* Luxury 3-Panel Banner */}
-      <section className="py-0 bg-[#FDFCF9]">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+      <section className="py-12 bg-[#FDFCF9]">
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 56px' }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Panel 1 */}
             <motion.div
@@ -111,8 +111,9 @@ const Features = () => {
               transition={{ duration: 0.7 }}
               className="relative bg-[#F5F0E8] overflow-hidden group h-[350px] flex items-end"
             >
-              <img src="/bracelet.png" alt="Bracelets" className="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105" />
-              <div className="relative z-10 p-6 w-full bg-gradient-to-t from-[#1a1a1a]/60 to-transparent">
+              <img src="/bracelet.png" alt="Bracelets" className="absolute top-0 left-0 w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/70 via-[#1a1a1a]/10 to-transparent pointer-events-none"></div>
+              <div className="relative z-10 p-6 w-full">
                 <p className="text-white font-serif text-2xl font-light">New Arrivals</p>
                 <p className="text-[#B8962E] text-xs tracking-widest uppercase mt-1">Bracelets & Bangles</p>
               </div>
@@ -126,8 +127,9 @@ const Features = () => {
               transition={{ duration: 0.7, delay: 0.15 }}
               className="relative bg-[#EDE8DC] overflow-hidden group h-[350px] flex items-end"
             >
-              <img src="/earrings.png" alt="Earrings" className="absolute inset-0 w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105" />
-              <div className="relative z-10 p-6 w-full bg-gradient-to-t from-[#1a1a1a]/60 to-transparent">
+              <img src="/earrings.png" alt="Earrings" className="absolute top-0 left-0 w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a]/70 via-[#1a1a1a]/10 to-transparent pointer-events-none"></div>
+              <div className="relative z-10 p-6 w-full">
                 <p className="text-white font-serif text-2xl font-light">Bestsellers</p>
                 <p className="text-[#B8962E] text-xs tracking-widest uppercase mt-1">Earrings & Studs</p>
               </div>
@@ -157,7 +159,7 @@ const Features = () => {
 
       {/* Core Features / Why Us */}
       <section className="py-20 bg-[#F5F0E8]">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 56px' }}>
           <div className="text-center mb-14">
             <motion.p
               initial={{ opacity: 0, y: 10 }}
@@ -221,9 +223,9 @@ const Features = () => {
       </section>
 
       {/* Brand Trust Bar */}
-      <section className="bg-[#1a1a1a] py-8">
-        <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+      <section className="bg-[#1a1a1a] py-10">
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 56px' }}>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
             {[
               { stat: '100%', label: 'Handcrafted' },
               { stat: 'Free', label: 'Shipping Island-Wide' },
