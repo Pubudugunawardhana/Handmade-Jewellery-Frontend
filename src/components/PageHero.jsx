@@ -17,7 +17,7 @@ const PageHero = ({ title, subtitle, crumbs = [] }) => {
       {/* Subtle background texture */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(184,150,46,0.05)_0%,transparent_70%)] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10 text-center">
+      <div className="max-w-7xl mx-auto px-8 md:px-14 relative z-10 text-center">
         <p className="text-[#B8962E] text-xs tracking-[0.35em] uppercase font-medium mb-4">Wave Mirissa</p>
         <h1 className="font-serif text-4xl md:text-6xl text-white font-light mb-4 leading-tight">{title}</h1>
         {subtitle && (
